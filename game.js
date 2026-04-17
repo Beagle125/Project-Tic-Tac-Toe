@@ -3,6 +3,7 @@ CONSTANT GLOBAL VARIABLES
 */
 const positions = 9;
 
+
 /*
 Gameboard Object
 *** Purpose:
@@ -107,7 +108,7 @@ Game Logic Object
 ** It checks for if a player has won a game already
 
 *** Variables:
-** currentPlayer determines which player turn it is 0 is player1 and X is player2
+** currentPlayer determines which player turn it is true is player1 and false is player2
 ** chosenPos stores the chosen position of the player
 ** player1 is an object
 ** player2 is an object
@@ -120,8 +121,8 @@ Game Logic Object
 
 */ 
 function Controller(){
-    let currentPlayer = 0; // start with player 1
     let chosenPos;
+    let currentPlayer = true; // start with player 1 as true
     const player1 = Player('X');
     const player2 = Player('O');
     const gameboard = Gameboard();
@@ -154,7 +155,7 @@ function Controller(){
             let playerSymbol;
             let chosenPos = -1;
 
-            if (currentPlayer === 0)
+            if (currentPlayer)
                 playerSymbol = player1.getPlayerSymbol();
             else
                 playerSymbol = player2.getPlayerSymbol();
@@ -171,7 +172,6 @@ function Controller(){
     };
 
     return {
-        currentPlayer,
         showPlayerName,
         gameOver,
         playerTurn
@@ -179,4 +179,3 @@ function Controller(){
 }
 
 const Game = Controller();
-const GameBoard = Gameboard(); // For testing purposes
