@@ -14,6 +14,7 @@ Gameboard Object
 *** Methods
 ** addPosition - deals with adding a player's position to the board. This assumes it is valid.
 ** numOfFreeSpace - returns the number of unoccupied cells
+** showBoardState - a getter for the board array
 ** findWin - checks if there is already a winning combination
 */
 function Gameboard(){
@@ -30,6 +31,10 @@ function Gameboard(){
 
     let numOfFreeSpace = () => {
        return (board.filter((position) => position === '0')).length;
+    };
+
+    let showBoardState = () => {
+        return board;
     };
 
     let findWin = () => {
@@ -55,6 +60,7 @@ function Gameboard(){
     return {
         addPosition,
         numOfFreeSpace,
+        showBoardState,
         findWin
     };
 
@@ -72,6 +78,7 @@ Player Object
 
 *** Methods
 ** getPlayerSymbol - a setter to returning the playerSymbol
+** getPlayerName - a setter to returning the playerName
 */
 function Player(symbol){
     let playerSymbol = symbol;
@@ -81,7 +88,14 @@ function Player(symbol){
         return playerSymbol;
     };
 
-    return {getPlayerSymbol};
+    let getPlayerName = () => {
+        return playerName;
+    }
+
+    return {
+        getPlayerSymbol,
+        getPlayerName
+    };
 }
 
 
@@ -100,6 +114,9 @@ Game Logic Object
 ** gameboard is the main gameboard an object
 
 *** Methods:
+** showPlayerName - 
+** gameOver - 
+** playerTurn - 
 
 */ 
 function Controller(){
@@ -110,15 +127,17 @@ function Controller(){
     const gameboard = Gameboard();
 
     const showPlayerName = (symbol) =>{
-        if (symbol === 'X')
-            console.log(player1.playerName);
+        if (symbol == 'X')
+            console.log(player1.getPlayerName());
+        else if (symbol == 'O')
+            console.log(player2.getPlayerName());
         else
-            console.log(player2.playerName);
+            console.log("Invalid symbol");
     };
 
     let gameOver = () =>{
-        let numOfFreeSpace = gameboard.numOfFreeSpace;
-        let isWin = gameboard.findWin;
+        let numOfFreeSpace = gameboard.numOfFreeSpace();
+        let isWin = gameboard.findWin();
         // check if the positions are all filled
         if (numOfFreeSpace === 0)
             return true;
@@ -130,34 +149,34 @@ function Controller(){
             return false;
     };
 
-    const gameLoop = () =>{
-        do{
+    const playerTurn = () =>{
             // Get the player's position
             let playerSymbol;
-            let chosenPos;
+            let chosenPos = -1;
 
             if (currentPlayer === 0)
                 playerSymbol = player1.getPlayerSymbol();
             else
                 playerSymbol = player2.getPlayerSymbol();
-
-            do{
-                chosenPos = prompt(`Player ${playerSymbol} move: `);
-            }while(gameboard[chosenPos] != '0');
             
-            // Update the board
-
+            // Check then update the board
+            do{
+                chosenPos = prompt(`Player ${playerSymbol} your move: `);
+            }while(gameboard.showBoardState()[chosenPos] != '0');
+            
+            gameboard.addPosition(playerSymbol, chosenPos);
+            
             // Update the next player
             currentPlayer = !currentPlayer;
-
-        }while(!gameOver());
     };
 
     return {
+        currentPlayer,
         showPlayerName,
         gameOver,
-        gameLoop
+        playerTurn
     };
 }
 
 const Game = Controller();
+const GameBoard = Gameboard(); // For testing purposes
