@@ -1,0 +1,16 @@
+/*Master container styles*/
+html, body {
+    margin: 0; /* Remove default browser margins */
+    padding: 0;
+    --background-color: #3b413c;
+    --header-color: #ffffff;
+    --board-color: #9db5b2;
+    --cell-color: #daf0ee;
+    --token-color: #94d1be;
+}
+
+.master-container{
+    background-color: var(--background-color);
+    height: 100vh;
+    width: 100vw;
+}
