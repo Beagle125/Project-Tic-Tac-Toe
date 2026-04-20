@@ -80,7 +80,13 @@ html, body {
 
 
 /*footer container styles*/
+/*This will show the name of the current player's turn and the winner, to play again the user must click after the game ends*/
 .footer-container{
-    background-color: var(--board-color);
     grid-row: 3 / 4;
+}
+
+.footer-container p{
+    color: var(--header-color);
+    font-size: var(--semi-header-font-size);
+    text-align: center;
 }
