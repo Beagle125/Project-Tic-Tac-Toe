@@ -18,7 +18,7 @@ Gameboard Object
 ** showBoardState - a getter for the board array
 ** findWin - checks if there is already a winning combination
 */
-function Gameboard(){
+const Gameboard = (function(){
     const board = [];
 
     // This creates the starting condition of the board
@@ -63,9 +63,10 @@ function Gameboard(){
         numOfFreeSpace,
         showBoardState,
         findWin
-    };
+    }
+})();
 
-}
+
 
 
 /*
@@ -81,7 +82,7 @@ Player Object
 ** getPlayerSymbol - a setter to returning the playerSymbol
 ** getPlayerName - a setter to returning the playerName
 */
-function Player(symbol){
+let Player = (function(symbol){
     let playerSymbol = symbol;
     const playerName = prompt(`Player ${playerSymbol} what is your name? `);
 
@@ -97,7 +98,7 @@ function Player(symbol){
         getPlayerSymbol,
         getPlayerName
     };
-}
+});
 
 
 /*
@@ -121,12 +122,12 @@ Game Logic Object
 ** winningPlayer - logs the winning player
 
 */ 
-function Controller(){
+const Controller = (function(){
     let chosenPos;
     let currentPlayer = true; // start with player 1 as true
     const player1 = Player('X');
     const player2 = Player('O');
-    const gameboard = Gameboard();
+    const gameboard = Gameboard;
 
     const showPlayerName = (symbol) =>{
         if (symbol == 'X')
@@ -175,8 +176,6 @@ function Controller(){
     const winningPlayer = () =>{
         currentPlayer = !currentPlayer;
         
-        console.log("Start");
-
         if (currentPlayer)
              console.log(`${player1.getPlayerName()} is the winner!`);
         else
@@ -190,6 +189,6 @@ function Controller(){
         playerTurn,
         winningPlayer
     };
-}
+})();
 
-const Game = Controller();
+const Game = Controller;
