@@ -115,9 +115,10 @@ Game Logic Object
 ** gameboard is the main gameboard an object
 
 *** Methods:
-** showPlayerName - 
-** gameOver - 
-** playerTurn - 
+** showPlayerName - This is for pure utility purposes, just to show the name of player associated with the X or O symbols
+** gameOver - This flags and returns a boolean value whether the game has ended or not
+** playerTurn - This contains all the logic related to getting, validating, and plotting a current player's turn
+** winningPlayer - logs the winning player
 
 */ 
 function Controller(){
@@ -171,10 +172,23 @@ function Controller(){
             currentPlayer = !currentPlayer;
     };
 
+    const winningPlayer = () =>{
+        currentPlayer = !currentPlayer;
+        
+        console.log("Start");
+
+        if (currentPlayer)
+             console.log(`${player1.getPlayerName()} is the winner!`);
+        else
+             console.log(`${player2.getPlayerName()} is the winner!`);
+
+    };
+
     return {
         showPlayerName,
         gameOver,
-        playerTurn
+        playerTurn,
+        winningPlayer
     };
 }
 
