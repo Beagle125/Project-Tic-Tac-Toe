@@ -8,6 +8,7 @@ html, body {
     --cell-color: #daf0ee;
     --token-color: #94d1be;
     --header-font-size: 3rem;
+    --semi-header-font-size: 2rem;
     --body-font-size: 1rem;
 }
 
@@ -35,8 +36,46 @@ html, body {
 
 /*content container styles*/
 .content-container{
-    background-color: var(--cell-color);
+    display: grid;
+    gap: 20px;
     grid-row: 2 / 3;
+    grid-template-columns: 1fr 2fr 1fr;
+}
+
+.content-left-panel,
+.content-right-panel{
+    align-items: center;
+    color: var(--header-color);
+    display: flex;
+    flex-direction: column;
+    grid-column: 1 / 2;
+    justify-content: center;
+    font-size: var(--semi-header-font-size);
+    text-align: center;
+}
+
+.content-gameboard{
+    border-radius: 10px;
+    box-sizing: border-box;
+    display: grid;
+    background-color: var(--board-color);
+    gap: 8px;
+    grid-column: 2 / 3;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    justify-self: center;
+    margin: 1rem;
+    padding: 8px;
+    width: clamp(460px, 30%, 460px);
+}
+
+.content-cell{
+    background-color: var(--cell-color);
+    border-radius: 10px;
+}
+
+.content-right-panel{
+    grid-column: 3 / 4;
 }
 
 
