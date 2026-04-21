@@ -72,6 +72,12 @@ html, body {
 .content-cell{
     background-color: var(--cell-color);
     border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.content-cell:hover{
+    filter:brightness(0.6);
+    transform:scale(1.1);
 }
 
 .content-right-panel{
