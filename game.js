@@ -197,11 +197,13 @@ Game Logic Object
 ** It checks for if a player has won a game already
 
 *** Variables:
-** currentPlayer determines which player turn it is true is player1 and false is player2
-** chosenPos stores the chosen position of the player
-** player1 is an object
-** player2 is an object
-** gameboard is the main gameboard an object
+** currentPlayer - determines which player turn it is true is player1 and false is player2
+** chosenPos - stores the chosen position of the player
+** isTie - determines the end state of the game if its a tie or not
+** player1 - is an object
+** player2 - is an object
+** gameboard - is the main gameboard an object
+** domManipulator - is the object the manipulates the DOM within the game controller
 
 *** Methods:
 ** showPlayerName - This is for pure utility purposes, just to show the name of player associated with the X or O symbols
@@ -213,6 +215,7 @@ Game Logic Object
 const Controller = (function(){
     // Declare variables
     let chosenPos;
+    let isTie;
     let currentPlayer = true; // start with player 1 as true
     const gameboard = Gameboard;
     const domManipulator = DOMManipipulator;
@@ -246,11 +249,15 @@ const Controller = (function(){
         let numOfFreeSpace = gameboard.numOfFreeSpace();
         let isWin = gameboard.findWin();
         // check if the positions are all filled
-        if (numOfFreeSpace === 0)
+        if (numOfFreeSpace === 0){
+            isTie = true;
             return true;
+        }
         // check if there is already a winning combination
-        else if (isWin)
+        else if (isWin){
+            isTie = true;
             return true;
+        }
         // else return false
         else
             return false;
@@ -288,15 +295,23 @@ const Controller = (function(){
     const winningPlayer = () =>{
         currentPlayer = !currentPlayer;
         
-        if (currentPlayer){
-             console.log(`${player1.getPlayerName()} is the winner!`);
-             player1.incrementPlayerScore();
-             domManipulator.setScore(player1.getPlayerScore(), player1.getPlayerSymbol());
+        if (isTie){
+            console.log("It is a tie!");
+            domManipulator.setMessage(5, player1.getPlayerName(), player2.getPlayerName())
         }
         else{
-             console.log(`${player2.getPlayerName()} is the winner!`);
-             player2.incrementPlayerScore();
-             domManipulator.setScore(player2.getPlayerScore(), player2.getPlayerSymbol());
+            if (currentPlayer){
+                console.log(`${player1.getPlayerName()} is the winner!`);
+                player1.incrementPlayerScore();
+                domManipulator.setScore(player1.getPlayerScore(), player1.getPlayerSymbol());
+                domManipulator.setMessage(3, player1.getPlayerName(), player2.getPlayerName())
+            }
+            else{
+                console.log(`${player2.getPlayerName()} is the winner!`);
+                player2.incrementPlayerScore();
+                domManipulator.setScore(player2.getPlayerScore(), player2.getPlayerSymbol());
+                domManipulator.setMessage(4, player1.getPlayerName(), player2.getPlayerName())
+            }
         }
 
     };
