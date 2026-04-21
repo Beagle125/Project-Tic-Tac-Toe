@@ -77,26 +77,40 @@ Player Object
 *** Variables:
 ** playerSymbol is the symbol used by the player
 ** playerName is the chosen name of the player
+** playerScore is the current score of the player
 
 *** Methods
-** getPlayerSymbol - a setter to returning the playerSymbol
-** getPlayerName - a setter to returning the playerName
+** getPlayerSymbol - a getter to returning the playerSymbol
+** getPlayerName - a getter to returning the playerName
+** getPlayerScore - a getter to return the player score
+** incrementPlayerScore - a method that adds one to the player score
 */
 let Player = (function(symbol){
     let playerSymbol = symbol;
+    let playerScore = 0;
     const playerName = prompt(`Player ${playerSymbol} what is your name? `);
 
-    let getPlayerSymbol = () => {
+    const getPlayerSymbol = () => {
         return playerSymbol;
     };
 
-    let getPlayerName = () => {
+    const getPlayerName = () => {
         return playerName;
-    }
+    };
+
+    const getPlayerScore = () =>{
+        return playerScore;
+    };
+
+    const incrementPlayerScore = () =>{
+        playerScore += 1;
+    };
 
     return {
         getPlayerSymbol,
-        getPlayerName
+        getPlayerName,
+        getPlayerScore,
+        incrementPlayerScore
     };
 });
 
@@ -115,6 +129,7 @@ DOM Manipulator object
 
 *** Methods:
 ** setName - set the name of the players in the DOM after getting it
+** setScore - set the score of the winning player after a game has finished
 */
 const DOMManipipulator = (function(){
     // Declare variables
@@ -131,9 +146,16 @@ const DOMManipipulator = (function(){
             playerOName.textContent = `${name}`;
     };
 
+    const setScore = (score, symbol) => {
+        if (symbol === 'X')
+            playerXScore.textContent = `${score}`;
+        else
+            playerOScore.textContent = `${score}`;
+    };
 
     return{
-        setName
+        setName,
+        setScore
     };
 
 })();
@@ -159,17 +181,21 @@ Game Logic Object
 
 */ 
 const Controller = (function(){
+    // Declare variables
     let chosenPos;
     let currentPlayer = true; // start with player 1 as true
     const gameboard = Gameboard;
     const domManipulator = DOMManipipulator;
 
-    // Set the names of the players and create new player objects
+    // Set the names of the players, set their scores and create new player objects
     const player1 = Player('X');
     const player2 = Player('O');
 
     domManipulator.setName(player1.getPlayerName(), player1.getPlayerSymbol());
     domManipulator.setName(player2.getPlayerName(), player2.getPlayerSymbol());
+
+    domManipulator.setScore(player1.getPlayerScore(), player1.getPlayerSymbol());
+    domManipulator.setScore(player2.getPlayerScore(), player2.getPlayerSymbol());
 
     // Main methods
     const showPlayerName = (symbol) =>{
@@ -219,10 +245,16 @@ const Controller = (function(){
     const winningPlayer = () =>{
         currentPlayer = !currentPlayer;
         
-        if (currentPlayer)
+        if (currentPlayer){
              console.log(`${player1.getPlayerName()} is the winner!`);
-        else
+             player1.incrementPlayerScore();
+             domManipulator.setScore(player1.getPlayerScore(), player1.getPlayerSymbol());
+        }
+        else{
              console.log(`${player2.getPlayerName()} is the winner!`);
+             player2.incrementPlayerScore();
+             domManipulator.setScore(player2.getPlayerScore(), player2.getPlayerSymbol());
+        }
 
     };
 
