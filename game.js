@@ -130,6 +130,12 @@ DOM Manipulator object
 *** Methods:
 ** setName - set the name of the players in the DOM after getting it
 ** setScore - set the score of the winning player after a game has finished
+** setMessage - set the message of the footer
+    ** Code 1 - `${playerXName}'s turn`
+    ** Code 2 - `${playerOName}'s turn`
+    ** Code 3 - `${playerXName} wins click anywhere to reset`
+    ** Code 4 - `${playerOName} wins click anywhere to reset`
+    ** Code 5 - "It is a tie click anywhere to reset"
 */
 const DOMManipipulator = (function(){
     // Declare variables
@@ -153,9 +159,33 @@ const DOMManipipulator = (function(){
             playerOScore.textContent = `${score}`;
     };
 
+    const setMessage = (code, playerXName, playerOName) => {
+        let message;
+        switch (code){
+            case 1:
+                message = `${playerXName}'s turn`;
+                break;
+            case 2:
+                message = `${playerOName}'s turn`;
+                break;
+            case 3:
+                message = `${playerXName} wins click anywhere to reset`;
+                break;
+            case 4:
+                message = `${playerOName} wins click anywhere to reset`;
+                break;
+            case 5:
+                message = "It is a tie click anywhere to reset";
+        }
+
+
+        footerMessage.textContent = message;
+    };
+
     return{
         setName,
-        setScore
+        setScore,
+        setMessage
     };
 
 })();
@@ -187,7 +217,7 @@ const Controller = (function(){
     const gameboard = Gameboard;
     const domManipulator = DOMManipipulator;
 
-    // Set the names of the players, set their scores and create new player objects
+    // Set the names of the players, set their scores, set the starting footer message and create new player objects
     const player1 = Player('X');
     const player2 = Player('O');
 
@@ -197,6 +227,11 @@ const Controller = (function(){
     domManipulator.setScore(player1.getPlayerScore(), player1.getPlayerSymbol());
     domManipulator.setScore(player2.getPlayerScore(), player2.getPlayerSymbol());
 
+    if (currentPlayer)
+        domManipulator.setMessage(1, player1.getPlayerName(), player2.getPlayerName());
+    else
+        domManipulator.setMessage(2, player1.getPlayerName(), player2.getPlayerName());
+    
     // Main methods
     const showPlayerName = (symbol) =>{
         if (symbol == 'X')
@@ -226,6 +261,7 @@ const Controller = (function(){
             let playerSymbol;
             let chosenPos = -1;
 
+            // get the current player's symbol
             if (currentPlayer)
                 playerSymbol = player1.getPlayerSymbol();
             else
@@ -240,6 +276,13 @@ const Controller = (function(){
             
             // Update the next player
             currentPlayer = !currentPlayer;
+
+            // Update the footer message
+            if (currentPlayer)
+                domManipulator.setMessage(1, player1.getPlayerName(), player2.getPlayerName());
+            else
+                domManipulator.setMessage(2, player1.getPlayerName(), player2.getPlayerName());
+
     };
 
     const winningPlayer = () =>{
