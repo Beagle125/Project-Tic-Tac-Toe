@@ -102,6 +102,42 @@ let Player = (function(symbol){
 
 
 /*
+DOM Manipulator object
+*** Purpose:
+** This will be responsible for accessing the DOM and updating the visuals
+
+*** Variables:
+** playerXScore - the p element that holds the display of playerXScore
+** playerOScore - the p element that holds the display of playerOScore
+** playerXName - the p element that holds the display of playerXName
+** playerOName - the p element that holds the display of playerOName
+** footerMessage - the p element that holds the message on the footer
+
+*** Methods:
+** setName - set the name of the players in the DOM after getting it
+*/
+const DOMManipipulator = (function(){
+    // Declare variables
+    const playerXScore = document.querySelector(".playerX-score");
+    const playerOScore = document.querySelector(".playerO-score");
+    const playerXName = document.querySelector(".playerX-name");
+    const playerOName = document.querySelector(".playerO-name");
+    const footerMessage = document.querySelector(".footer-message");
+
+    const setName = (name, symbol) => {
+        if (symbol === 'X')
+            playerXName.textContent = `${name}`;
+        else
+            playerOName.textContent = `${name}`;
+    };
+
+
+    return{
+        setName
+    };
+
+})();
+/*
 Game Logic Object
 *** Purpose:
 ** This will be responsible for controlling the logic of the game
@@ -125,10 +161,17 @@ Game Logic Object
 const Controller = (function(){
     let chosenPos;
     let currentPlayer = true; // start with player 1 as true
+    const gameboard = Gameboard;
+    const domManipulator = DOMManipipulator;
+
+    // Set the names of the players and create new player objects
     const player1 = Player('X');
     const player2 = Player('O');
-    const gameboard = Gameboard;
 
+    domManipulator.setName(player1.getPlayerName(), player1.getPlayerSymbol());
+    domManipulator.setName(player2.getPlayerName(), player2.getPlayerSymbol());
+
+    // Main methods
     const showPlayerName = (symbol) =>{
         if (symbol == 'X')
             console.log(player1.getPlayerName());
