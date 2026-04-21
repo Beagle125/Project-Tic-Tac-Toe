@@ -3,7 +3,6 @@ CONSTANT GLOBAL VARIABLES
 */
 const positions = 9;
 
-
 /*
 Gameboard Object
 *** Purpose:
@@ -199,12 +198,18 @@ const DOMManipipulator = (function(){
             cell.classList.remove("content-hover");
     });
 
+    const addClass = (function(cellID){
+        let cell = document.getElementById(cellID);
+        cell.classList.add("content-hover");
+    });
+
     return{
         setName,
         setScore,
         setMessage,
         setToken,
-        removeClass
+        removeClass,
+        addClass
     };
 
 })();
@@ -233,7 +238,7 @@ Game Logic Object
 
 */ 
 const Controller = (function(){
-    // Declare variables
+    // Initialize New Game
     let chosenPos;
     let isTie;
     let currentPlayer = true; // start with player 1 as true
@@ -244,7 +249,6 @@ const Controller = (function(){
     // Set the names of the players, set their scores, set the starting footer message and create new player objects
     const player1 = Player('X');
     const player2 = Player('O');
-
     domManipulator.setName(player1.getPlayerName(), player1.getPlayerSymbol());
     domManipulator.setName(player2.getPlayerName(), player2.getPlayerSymbol());
 
@@ -255,6 +259,10 @@ const Controller = (function(){
         domManipulator.setMessage(1, player1.getPlayerName(), player2.getPlayerName());
     else
         domManipulator.setMessage(2, player1.getPlayerName(), player2.getPlayerName());
+    
+    cells.forEach((cell) => {
+        domManipulator.addClass(cell.id);
+    });
     
     // Main methods
     const showPlayerName = (symbol) =>{
@@ -316,9 +324,8 @@ const Controller = (function(){
                 domManipulator.setMessage(2, player1.getPlayerName(), player2.getPlayerName());
 
             // Check if the game is over
-            if (gameOver()){
-                winningPlayer();
-            }
+            if (gameOver())
+                winningPlayer();     
         }
     };
 
@@ -367,4 +374,6 @@ const Controller = (function(){
     };
 })();
 
+
 const Game = Controller;
+
