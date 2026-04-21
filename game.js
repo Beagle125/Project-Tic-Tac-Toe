@@ -126,6 +126,7 @@ DOM Manipulator object
 ** playerXName - the p element that holds the display of playerXName
 ** playerOName - the p element that holds the display of playerOName
 ** footerMessage - the p element that holds the message on the footer
+** cells - all the div elements that are cells to the gameboard
 
 *** Methods:
 ** setName - set the name of the players in the DOM after getting it
@@ -177,15 +178,24 @@ const DOMManipipulator = (function(){
             case 5:
                 message = "It is a tie click anywhere to reset";
         }
-
-
         footerMessage.textContent = message;
     };
+
+    const setToken = (function(cellID, playerSymbol){
+        let cell = document.getElementById(cellID);
+
+        if (playerSymbol == 'X')
+            cell.textContent = "X";
+        else
+            cell.textContent = "O";
+    });
+
 
     return{
         setName,
         setScore,
-        setMessage
+        setMessage,
+        setToken
     };
 
 })();
@@ -204,6 +214,7 @@ Game Logic Object
 ** player2 - is an object
 ** gameboard - is the main gameboard an object
 ** domManipulator - is the object the manipulates the DOM within the game controller
+** cells - this contains all the divs that are cells in the gameboard
 
 *** Methods:
 ** showPlayerName - This is for pure utility purposes, just to show the name of player associated with the X or O symbols
@@ -219,6 +230,7 @@ const Controller = (function(){
     let currentPlayer = true; // start with player 1 as true
     const gameboard = Gameboard;
     const domManipulator = DOMManipipulator;
+    const cells = document.querySelectorAll('.content-cell');
 
     // Set the names of the players, set their scores, set the starting footer message and create new player objects
     const player1 = Player('X');
@@ -255,7 +267,7 @@ const Controller = (function(){
         }
         // check if there is already a winning combination
         else if (isWin){
-            isTie = true;
+            isTie = false;
             return true;
         }
         // else return false
@@ -264,9 +276,9 @@ const Controller = (function(){
     };
 
     const playerTurn = () =>{
+        if (!gameOver()){
             // Get the player's position
             let playerSymbol;
-            let chosenPos = -1;
 
             // get the current player's symbol
             if (currentPlayer)
@@ -275,21 +287,29 @@ const Controller = (function(){
                 playerSymbol = player2.getPlayerSymbol();
             
             // Check then update the board
-            do{
-                chosenPos = prompt(`Player ${playerSymbol} your move: `);
-            }while(gameboard.showBoardState()[chosenPos] != '0');
-            
-            gameboard.addPosition(playerSymbol, chosenPos);
-            
-            // Update the next player
-            currentPlayer = !currentPlayer;
+            if (gameboard.showBoardState()[chosenPos] === '0'){
+                gameboard.addPosition(playerSymbol, chosenPos);
+                domManipulator.setToken(chosenPos, playerSymbol);
+                console.log("Successful Move");
 
+                // Update the next player
+                currentPlayer = !currentPlayer;
+            }
+            else{
+                console.log("Invalid Move");
+            }
+            
             // Update the footer message
             if (currentPlayer)
                 domManipulator.setMessage(1, player1.getPlayerName(), player2.getPlayerName());
             else
                 domManipulator.setMessage(2, player1.getPlayerName(), player2.getPlayerName());
 
+            // Check if the game is over
+            if (gameOver()){
+                winningPlayer();
+            }
+        }
     };
 
     const winningPlayer = () =>{
@@ -316,7 +336,16 @@ const Controller = (function(){
 
     };
 
+    // Clicking cells event listener
+    cells.forEach((cell) => {
+        cell.addEventListener("click", () => {
+            chosenPos = cell.id;
+            playerTurn();
+        });
+    });
+
     return {
+        gameboard,
         showPlayerName,
         gameOver,
         playerTurn,
