@@ -137,6 +137,8 @@ DOM Manipulator object
     ** Code 3 - `${playerXName} wins click anywhere to reset`
     ** Code 4 - `${playerOName} wins click anywhere to reset`
     ** Code 5 - "It is a tie click anywhere to reset"
+** setToken - this add the token or text to the cell that was chosen
+** removeClass - this is to remove the class content-cell to remove hover effect
 */
 const DOMManipipulator = (function(){
     // Declare variables
@@ -190,12 +192,19 @@ const DOMManipipulator = (function(){
             cell.textContent = "O";
     });
 
+    const removeClass = (function(cellID){
+        let cell = document.getElementById(cellID);
+
+        if (cell.classList.contains("content-hover"))
+            cell.classList.remove("content-hover");
+    });
 
     return{
         setName,
         setScore,
         setMessage,
-        setToken
+        setToken,
+        removeClass
     };
 
 })();
@@ -290,6 +299,7 @@ const Controller = (function(){
             if (gameboard.showBoardState()[chosenPos] === '0'){
                 gameboard.addPosition(playerSymbol, chosenPos);
                 domManipulator.setToken(chosenPos, playerSymbol);
+                domManipulator.removeClass(chosenPos);
                 console.log("Successful Move");
 
                 // Update the next player
@@ -333,6 +343,10 @@ const Controller = (function(){
                 domManipulator.setMessage(4, player1.getPlayerName(), player2.getPlayerName())
             }
         }
+
+        cells.forEach((cell) => {
+            domManipulator.removeClass(cell.id);
+        });
 
     };
 

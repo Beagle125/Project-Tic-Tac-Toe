@@ -77,10 +77,13 @@ html, body {
     border-radius: 10px;
     font-size: var(--header-font-size);
     justify-content: center;
+}
+
+.content-hover{
     transition: all 0.3s ease;
 }
 
-.content-cell:hover{
+.content-hover:hover{
     filter:brightness(0.6);
     transform:scale(1.1);
 }
