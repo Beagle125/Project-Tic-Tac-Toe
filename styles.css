@@ -3,6 +3,7 @@ html, body {
     margin: 0; /* Remove default browser margins */
     padding: 0;
     --background-color: #3b413c;
+    --footer-color: #2a2f2b;
     --header-color: #ffffff;
     --board-color: #9db5b2;
     --cell-color: #daf0ee;
@@ -96,6 +97,7 @@ html, body {
 /*footer container styles*/
 /*This will show the name of the current player's turn and the winner, to play again the user must click after the game ends*/
 .footer-container{
+    background-color: var(--footer-color);
     grid-row: 3 / 4;
 }
 

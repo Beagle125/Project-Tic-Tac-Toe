@@ -12,6 +12,7 @@ Gameboard Object
 ** 1D array of board that stores all the positions
 
 *** Methods
+** resetBoard - deals with resetting the board
 ** addPosition - deals with adding a player's position to the board. This assumes it is valid.
 ** numOfFreeSpace - returns the number of unoccupied cells
 ** showBoardState - a getter for the board array
@@ -20,10 +21,13 @@ Gameboard Object
 const Gameboard = (function(){
     const board = [];
 
-    // This creates the starting condition of the board
-    for (let i = 0; i < positions; i++){
-        board[i] = '0';
-    }
+    const resetBoard = () => {
+        // This creates the starting condition of the board
+        for (let i = 0; i < positions; i++){
+            board[i] = '0';
+        }
+    };
+
 
     const addPosition = (symbol, chosenPos) => {
         board[chosenPos] = symbol;
@@ -58,6 +62,7 @@ const Gameboard = (function(){
     };
 
     return {
+        resetBoard,
         addPosition,
         numOfFreeSpace,
         showBoardState,
@@ -171,10 +176,10 @@ const DOMManipipulator = (function(){
                 message = `${playerOName}'s turn`;
                 break;
             case 3:
-                message = `${playerXName} wins click anywhere to reset`;
+                message = `${playerXName} wins click here to reset`;
                 break;
             case 4:
-                message = `${playerOName} wins click anywhere to reset`;
+                message = `${playerOName} wins click here to reset`;
                 break;
             case 5:
                 message = "It is a tie click anywhere to reset";
@@ -201,6 +206,9 @@ const DOMManipipulator = (function(){
     const addClass = (function(cellID){
         let cell = document.getElementById(cellID);
         cell.classList.add("content-hover");
+
+        // Remove all the token
+        cell.textContent = "";
     });
 
     return{
@@ -240,11 +248,12 @@ Game Logic Object
 */ 
 const Controller = (function(){
     // Declare important variables
-    let gameboard;
-    let domManipulator;
+    let gameboard = Gameboard;
+    let domManipulator = DOMManipipulator;
     let chosenPos
     let isTie;
     let cells = document.querySelectorAll('.content-cell');
+    let test = document.querySelector('.footer-container')
 
     // Set the names of the players, set their scores, set the starting footer message and create new player objects
     const player1 = Player('X');
@@ -253,9 +262,8 @@ const Controller = (function(){
     // Initialize New Game
     const initializeNewGame = () => {
         currentPlayer = true; // start with player 1 as true
-        gameboard = Gameboard;
-        domManipulator = DOMManipipulator;
 
+        gameboard.resetBoard();
 
         if (currentPlayer)
             domManipulator.setMessage(1, player1.getPlayerName(), player2.getPlayerName());
@@ -378,12 +386,11 @@ const Controller = (function(){
     });
 
     // for resetting the game
-    /*
-    window.addEventListener("click", () => {
+
+    test.addEventListener("click", () => {
         if (gameOver())
             initializeNewGame();
     });
-    */
 
     return{
         showPlayerName,
