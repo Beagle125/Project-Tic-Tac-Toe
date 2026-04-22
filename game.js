@@ -130,7 +130,7 @@ DOM Manipulator object
 ** playerXName - the p element that holds the display of playerXName
 ** playerOName - the p element that holds the display of playerOName
 ** footerMessage - the p element that holds the message on the footer
-** cells - all the div elements that are cells to the gameboard
+** footerContainer - the div container for the footer
 
 *** Methods:
 ** setName - set the name of the players in the DOM after getting it
@@ -151,6 +151,7 @@ const DOMManipipulator = (function(){
     const playerXName = document.querySelector(".playerX-name");
     const playerOName = document.querySelector(".playerO-name");
     const footerMessage = document.querySelector(".footer-message");
+    const footerContainer = document.querySelector(".footer-container");
 
     const setName = (name, symbol) => {
         if (symbol === 'X')
