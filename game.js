@@ -143,6 +143,8 @@ DOM Manipulator object
     ** Code 5 - "It is a tie click anywhere to reset"
 ** setToken - this add the token or text to the cell that was chosen
 ** removeClass - this is to remove the class content-cell to remove hover effect
+** startGame - this to remove the hover effect of the footer indicating that it is not clickable
+** endGame - this is to add the hover effect of the footer indiciating that it is now clickable
 */
 const DOMManipipulator = (function(){
     // Declare variables
@@ -212,13 +214,24 @@ const DOMManipipulator = (function(){
         cell.textContent = "";
     });
 
+    const startGame = () => {
+        if (footerContainer.classList.contains("footer-hover"))
+            footerContainer.classList.remove("footer-hover");
+    };
+
+    const endGame = () => {
+        footerContainer.classList.add("footer-hover");
+    };
+
     return{
         setName,
         setScore,
         setMessage,
         setToken,
         removeClass,
-        addClass
+        addClass,
+        startGame,
+        endGame
     };
 
 })();
@@ -265,6 +278,7 @@ const Controller = (function(){
         currentPlayer = true; // start with player 1 as true
 
         gameboard.resetBoard();
+        DOMManipipulator.startGame();
 
         if (currentPlayer)
             domManipulator.setMessage(1, player1.getPlayerName(), player2.getPlayerName());
@@ -376,6 +390,7 @@ const Controller = (function(){
             domManipulator.removeClass(cell.id);
         });
 
+        DOMManipipulator.endGame();
     };
 
     // Clicking cells event listener
