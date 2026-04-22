@@ -231,6 +231,7 @@ Game Logic Object
 ** cells - this contains all the divs that are cells in the gameboard
 
 *** Methods:
+** initializeNewGame - This is for resetting the game
 ** showPlayerName - This is for pure utility purposes, just to show the name of player associated with the X or O symbols
 ** gameOver - This flags and returns a boolean value whether the game has ended or not
 ** playerTurn - This contains all the logic related to getting, validating, and plotting a current player's turn
@@ -238,31 +239,42 @@ Game Logic Object
 
 */ 
 const Controller = (function(){
-    // Initialize New Game
-    let chosenPos;
+    // Declare important variables
+    let gameboard;
+    let domManipulator;
+    let chosenPos
     let isTie;
-    let currentPlayer = true; // start with player 1 as true
-    const gameboard = Gameboard;
-    const domManipulator = DOMManipipulator;
-    const cells = document.querySelectorAll('.content-cell');
+    let cells = document.querySelectorAll('.content-cell');
 
     // Set the names of the players, set their scores, set the starting footer message and create new player objects
     const player1 = Player('X');
     const player2 = Player('O');
-    domManipulator.setName(player1.getPlayerName(), player1.getPlayerSymbol());
-    domManipulator.setName(player2.getPlayerName(), player2.getPlayerSymbol());
 
-    domManipulator.setScore(player1.getPlayerScore(), player1.getPlayerSymbol());
-    domManipulator.setScore(player2.getPlayerScore(), player2.getPlayerSymbol());
+    // Initialize New Game
+    const initializeNewGame = () => {
+        currentPlayer = true; // start with player 1 as true
+        gameboard = Gameboard;
+        domManipulator = DOMManipipulator;
 
-    if (currentPlayer)
-        domManipulator.setMessage(1, player1.getPlayerName(), player2.getPlayerName());
-    else
-        domManipulator.setMessage(2, player1.getPlayerName(), player2.getPlayerName());
-    
-    cells.forEach((cell) => {
-        domManipulator.addClass(cell.id);
-    });
+
+        if (currentPlayer)
+            domManipulator.setMessage(1, player1.getPlayerName(), player2.getPlayerName());
+        else
+            domManipulator.setMessage(2, player1.getPlayerName(), player2.getPlayerName());
+
+        domManipulator.setName(player1.getPlayerName(), player1.getPlayerSymbol());
+        domManipulator.setName(player2.getPlayerName(), player2.getPlayerSymbol());
+
+        domManipulator.setScore(player1.getPlayerScore(), player1.getPlayerSymbol());
+        domManipulator.setScore(player2.getPlayerScore(), player2.getPlayerSymbol());
+
+        cells.forEach((cell) => {
+            domManipulator.addClass(cell.id);
+        });
+    };
+
+    // Call the game to start
+    initializeNewGame();
     
     // Main methods
     const showPlayerName = (symbol) =>{
@@ -365,8 +377,15 @@ const Controller = (function(){
         });
     });
 
-    return {
-        gameboard,
+    // for resetting the game
+    /*
+    window.addEventListener("click", () => {
+        if (gameOver())
+            initializeNewGame();
+    });
+    */
+
+    return{
         showPlayerName,
         gameOver,
         playerTurn,
