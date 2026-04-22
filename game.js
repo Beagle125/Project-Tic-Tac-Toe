@@ -298,13 +298,13 @@ const Controller = (function(){
         let numOfFreeSpace = gameboard.numOfFreeSpace();
         let isWin = gameboard.findWin();
         // check if the positions are all filled
-        if (numOfFreeSpace === 0){
-            isTie = true;
+        if (isWin){
+            isTie = false;
             return true;
         }
         // check if there is already a winning combination
-        else if (isWin){
-            isTie = false;
+        else if (numOfFreeSpace === 0){
+            isTie = true;
             return true;
         }
         // else return false
