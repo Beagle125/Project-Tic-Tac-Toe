@@ -115,3 +115,41 @@ html, body {
 .footer-hover:hover{
     filter:brightness(1.5);
 }
+
+
+/* Modal Styles */
+dialog{
+    background-color: var(--background-color);
+    border: black solid 2px;
+    border-radius: 10px;
+    color: var(--header-color);
+    font-size: var(--semi-header-font-size);
+    z-index: 0;
+}
+
+
+dialog input{
+    background-color: var(--cell-color);
+    border-radius: 15px;
+    height: 2rem;
+}
+
+dialog button{
+    background-color: var(--token-color);
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+dialog button:hover{
+    transform: scale(1.2);
+}
+
+.blur-background{
+    background-color: rgba(0, 0, 0, 0.4);
+    height: 100vh;
+    position: absolute;
+    width: 100vw;
+    z-index: 1;
+    -webkit-backdrop-filter: blur(5px);
+     backdrop-filter: blur(5px);;
+}
