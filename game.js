@@ -2,6 +2,8 @@
 CONSTANT GLOBAL VARIABLES
 */
 const positions = 9;
+let player1Name;
+let player2Name;
 
 /*
 Gameboard Object
@@ -89,10 +91,10 @@ Player Object
 ** getPlayerScore - a getter to return the player score
 ** incrementPlayerScore - a method that adds one to the player score
 */
-let Player = (function(symbol){
+let Player = (function(symbol, name){
     let playerSymbol = symbol;
     let playerScore = 0;
-    const playerName = prompt(`Player ${playerSymbol} what is your name? `);
+    const playerName = name;
 
     const getPlayerSymbol = () => {
         return playerSymbol;
@@ -270,8 +272,8 @@ const Controller = (function(){
     let test = document.querySelector('.footer-container')
 
     // Set the names of the players, set their scores, set the starting footer message and create new player objects
-    const player1 = Player('X');
-    const player2 = Player('O');
+    const player1 = Player('X', player1Name);
+    const player2 = Player('O', player2Name);
 
     // Initialize New Game
     const initializeNewGame = () => {
@@ -414,8 +416,20 @@ const Controller = (function(){
         playerTurn,
         winningPlayer
     };
+});
+
+/**/
+const getPlayerNames = (function(){
+    const modal = document.getElementById("my-dialog");
+    modal.showModal();
 })();
 
 
-const Game = Controller;
+/**/
+window.addEventListener("submit", (event) => {
+    player1Name = document.getElementById("P1Name").value;
+    player2Name = document.getElementById("P2Name").value;
+    const Game = Controller();
+});
+
 
