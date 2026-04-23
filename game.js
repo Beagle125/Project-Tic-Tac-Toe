@@ -418,14 +418,14 @@ const Controller = (function(){
     };
 });
 
-/**/
+/* This module is for everything related with the modal used in getting player input*/
 const getPlayerNames = (function(){
     const modal = document.getElementById("my-dialog");
     modal.showModal();
 })();
 
 
-/**/
+/*This global code is for listening on the player submitting the forms*/
 window.addEventListener("submit", (event) => {
     player1Name = document.getElementById("P1Name").value;
     player2Name = document.getElementById("P2Name").value;
