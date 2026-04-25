@@ -429,9 +429,6 @@ const getPlayerNames = (function(){
 window.addEventListener("submit", (event) => {
     player1Name = document.getElementById("P1Name").value;
     player2Name = document.getElementById("P2Name").value;
-    blurBackground = document.querySelector(".blur-background");
-
-    blurBackground.remove();
     const Game = Controller();
 });
 
